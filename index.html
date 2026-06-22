@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Мэксон Трейд — Оптовые поставки химии ИНТЕРХИМ</title>
 
-    <!-- Шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -60,7 +58,6 @@
 </head>
 <body class="font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 antialiased">
 
-<!-- ==================== ШАПКА (HEADER) ==================== -->
 <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 lg:h-18">
@@ -97,7 +94,6 @@
     </div>
 </header>
 
-<!-- ==================== МОБИЛЬНАЯ БОКОВАЯ ПАНЕЛЬ (ШТОРКА) ==================== -->
 <div id="sidebarOverlay" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden transition-opacity duration-300 lg:hidden"></div>
 <div id="mobileSidebar" class="mobile-sidebar fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white dark:bg-gray-800 shadow-2xl z-50 flex flex-col translate-x-full lg:hidden">
     <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -123,26 +119,23 @@
     </div>
 </div>
 
-<!-- ==================== ГЛАВНЫЙ БАННЕР-СЛАЙДЕР ==================== -->
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
     <div class="relative w-full overflow-hidden rounded-2xl shadow-lg h-36 sm:h-44 lg:h-52" id="sliderContainer">
         <div class="slide absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700"></div>
         <div class="slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700"></div>
-       
+    </div>
 </section>
 
-<!-- ==================== КАТАЛОГ ПРОДУКЦИИ ==================== -->
 <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-2">
     <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="catalog.title">Каталог продукции</h2>
-    <div class="flex overflow-x-auto md:overflow-visible md:flex-wrap md:justify-center scrollbar-hide gap-2 pb-2 mb-6" id="categoriesContainer"></div>
+    <div id="categoriesContainer" class="flex flex-wrap gap-2 mb-6"></div>
 </section>
 
 <section id="productsSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0 lg:py-0">
-    <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"></div>
+    <div id="productsContainer" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"></div>
     <p id="noProducts" class="text-center text-gray-500 dark:text-gray-400 mt-8 hidden" data-i18n="catalog.noProducts">Товары не найдены</p>
 </section>
 
-<!-- ==================== УСЛОВИЯ ==================== -->
 <section id="conditions" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
     <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-8" data-i18n="conditions.title">Оптовые условия</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -167,7 +160,6 @@
     </div>
 </section>
 
-<!-- ==================== ОТЗЫВЫ ==================== -->
 <section id="reviews" class="bg-gray-50 dark:bg-gray-800/50 py-12 lg:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="reviews.title">Отзывы клиентов</h2>
@@ -185,7 +177,6 @@
     </div>
 </section>
 
-<!-- ==================== ПОДВАЛ ==================== -->
 <footer id="contacts" class="bg-gray-900 dark:bg-gray-950 text-gray-400 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="text-sm text-center sm:text-left">
@@ -205,7 +196,6 @@
     </div>
 </footer>
 
-<!-- ==================== НИЖНЯЯ МОБИЛЬНАЯ ПАНЕЛЬ ==================== -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40 md:hidden flex justify-around items-center py-1.5">
     <button id="bottomHome" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -227,8 +217,6 @@
     </button>
 </nav>
 
-<!-- ==================== МОДАЛЬНЫЕ ОКНА ==================== -->
-<!-- Корзина -->
 <div id="cartOverlay" class="cart-overlay fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden opacity-0 invisible transition-all"></div>
 <div id="cartPanel" class="cart-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-800 shadow-2xl flex flex-col translate-x-full">
     <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -244,7 +232,6 @@
     </div>
 </div>
 
-<!-- Оформление заказа -->
 <div id="checkoutModal" class="fixed inset-0 z-[60] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="checkoutOverlay"></div>
     <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
@@ -264,7 +251,6 @@
     </div>
 </div>
 
-<!-- Модальное окно товара -->
 <div id="productModal" class="fixed inset-0 z-[70] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="productModalOverlay"></div>
     <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-lg mx-4 shadow-2xl z-10 animate-fade-in max-h-[90vh] overflow-y-auto">
@@ -273,7 +259,6 @@
     </div>
 </div>
 
-<!-- Авторизация -->
 <div id="authModal" class="fixed inset-0 z-[80] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="authOverlay"></div>
     <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
@@ -290,7 +275,6 @@
     </div>
 </div>
 
-<!-- Профиль -->
 <div id="profileModal" class="fixed inset-0 z-[80] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="profileOverlay"></div>
     <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
@@ -302,7 +286,6 @@
     </div>
 </div>
 
-<!-- Админ-панель -->
 <div id="adminModal" class="fixed inset-0 z-[90] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="adminOverlay"></div>
     <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-lg mx-4 shadow-2xl z-10 animate-fade-in max-h-[90vh] overflow-y-auto">
@@ -316,7 +299,18 @@
         <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
             <h4 class="font-semibold mb-2">Добавить товар</h4>
             <input type="text" id="newProductName" placeholder="Название" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
-            <select id="newProductCategory" class="w-full p-2 border rounded mb-2 dark:bg-gray-600"><option value="auto">Автохимия</option><option value="cleaning">Клининг</option><option value="hotel">Номерной фонд</option><option value="other">Другое</option></select>
+            <select id="newProductCategory" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
+                <option value="cleaning">Клининг</option>
+                <option value="praktikhim">Практихим</option>
+                <option value="floor">Защита напольных покрытий</option>
+                <option value="food">Пищевая промышленность</option>
+                <option value="hotels">Отели и гостиницы</option>
+                <option value="laundry">Стирка и прачечные</option>
+                <option value="detailing">Автомойки и детейлинг</option>
+                <option value="home">Уход за домом</option>
+                <option value="hands">Гигиена рук</option>
+                <option value="disinfection">Дезинфекция</option>
+            </select>
             <input type="number" id="newProductPrice" placeholder="Цена" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
             <input type="number" id="newProductWeight" placeholder="Вес (кг)" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
             <input type="text" id="newProductDesc" placeholder="Описание" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
@@ -326,7 +320,6 @@
     </div>
 </div>
 
-<!-- ЭКРАН ИЗБРАННОГО -->
 <div id="favoritesOverlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden opacity-0 invisible transition-all"></div>
 <div id="favoritesPanel" class="favorites-panel fixed inset-0 z-50 bg-white dark:bg-gray-800 flex flex-col translate-y-full">
     <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -340,14 +333,8 @@
 </div>
 
 <script>
-    // ==================== НАСТРОЙКИ ИЗОБРАЖЕНИЙ (ЗАМЕНИТЕ НА СВОИ ССЫЛКИ) ====================
-    const LOGO_URL = '444.jpg'; // Замените на ссылку на логотип, например 'img/logo.png'
-    const BANNER_IMAGES = [
-        '11.png', // Слайд 1
-        '22.png', // Слайд 2
-        '33.jpg'  // Слайд 3
-    ];
-    // ==================== ОСТАЛЬНОЙ КОД ====================
+    const LOGO_URL = '444.jpg';
+    const BANNER_IMAGES = ['11.png', '22.png', '33.jpg'];
 
     (function() {
         const translations = {
@@ -394,21 +381,72 @@
         let discountRub = 0;
 
         const categories = [
-            { id: 'auto', name: '🚗 Автохимия', desc: 'Шампуни, полироли, очистители' },
-            { id: 'cleaning', name: '🧹 Клининг', desc: 'Профессиональная уборка помещений' },
-            { id: 'hotel', name: '🏨 Номерной фонд', desc: 'Химия для гостиниц и отелей' },
-            { id: 'other', name: '⚗️ Другое', desc: 'Специализированные составы' }
+            { id: 'cleaning', name: '🧹 Клининг', desc: 'Средства для профессиональной уборки' },
+            { id: 'praktikhim', name: '🧪 Практихим', desc: 'Препараты для химчисток и пятновыведения' },
+            { id: 'floor', name: '🛡️ Защита напольных покрытий', desc: 'Защита и уход за напольными покрытиями' },
+            { id: 'food', name: '🍽️ Пищевая промышленность', desc: 'Моющие и дезинфицирующие средства для пищевых производств' },
+            { id: 'hotels', name: '🏨 Отели и гостиницы', desc: 'Средства для гостиничного хозяйства' },
+            { id: 'laundry', name: '🧺 Стирка и прачечные', desc: 'Средства для стирки и прачечных' },
+            { id: 'detailing', name: '🚗 Автомойки и детейлинг', desc: 'Автохимия и средства для детейлинга' },
+            { id: 'home', name: '🏡 Уход за домом', desc: 'Бытовая химия для дома' },
+            { id: 'hands', name: '🤲 Гигиена рук', desc: 'Антисептики и средства для гигиены рук' },
+            { id: 'disinfection', name: '🦠 Дезинфекция', desc: 'Дезинфицирующие средства для поверхностей и воздуха' }
         ];
 
-        // Товары: поле image содержит путь к картинке (замените на свои)
         const defaultProducts = [
-            { id: 1, cat: 'auto', name: 'Автошампунь активная пена', desc: 'Бесконтактная мойка, концентрат 1:10', price: 320, weight: 1, image: '2.jpg' },
-            { id: 2, cat: 'auto', name: 'Полироль кузова', desc: 'Защита и блеск, нанесение вручную', price: 520, weight: 1, image: '4.jpg' },
-            { id: 3, cat: 'cleaning', name: 'Универсальный очиститель', desc: 'Для всех типов поверхностей', price: 280, weight: 5, image: '5.jpg' },
-            { id: 4, cat: 'cleaning', name: 'Средство для стекол', desc: 'Без разводов, быстрое высыхание', price: 190, weight: 5, image: '6.jpg' },
-            { id: 5, cat: 'hotel', name: 'Гель для душа 5л', desc: 'Гостиничный формат, нейтральный pH', price: 420, weight: 0.75, image: '7.webp' },
-            { id: 6, cat: 'other', name: 'Антисептик для рук', desc: 'Дезинфекция, с увлажнением', price: 240, weight: 0.5, image: '8.webp' },
+            { id: 1, cat: 'cleaning', name: 'Концентрированное средство для мытья полов', desc: 'Объем 5 л. Для всех типов напольных покрытий', price: 450, weight: 5, image: 'https://placeholder.com' },
+            { id: 2, cat: 'cleaning', name: 'Универсальный очиститель для твердых поверхностей', desc: 'Концентрат 1 л. Удаляет жир и грязь', price: 320, weight: 1, image: 'https://placeholder.com' },
+            { id: 3, cat: 'cleaning', name: 'Средство для стекол и зеркал', desc: '0.5 л. Без разводов, быстро сохнет', price: 180, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 4, cat: 'cleaning', name: 'Пенный очиститель для ванных комнат', desc: '0.75 л. Удаляет мыльный налет и ржавчину', price: 280, weight: 0.8, image: 'https://placeholder.com' },
+            { id: 5, cat: 'cleaning', name: 'Нейтральный очиститель для ковров', desc: '1 л. Безопасен для всех типов ворса', price: 350, weight: 1, image: 'https://placeholder.com' },
+            { id: 6, cat: 'praktikhim', name: 'Профессиональный пятновыводитель для одежды', desc: '1 л. Эффективен против масляных и белковых пятен', price: 520, weight: 1, image: 'https://placeholder.com' },
+            { id: 7, cat: 'praktikhim', name: 'Растворитель для жиров и масел', desc: '5 л. Концентрат для промышленной мойки', price: 780, weight: 5, image: 'https://placeholder.com' },
+            { id: 8, cat: 'praktikhim', name: 'Средство для удаления жевательной резинки', desc: '0.5 л. Замораживает и удаляет без следа', price: 340, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 9, cat: 'praktikhim', name: 'Кислотный очиститель для накипи и ржавчины', desc: '1 л. Для сантехники и оборудования', price: 460, weight: 1.2, image: 'https://placeholder.com' },
+            { id: 10, cat: 'praktikhim', name: 'Щелочной усилитель для мойки', desc: '5 л. Повышает pH моющего раствора', price: 630, weight: 5, image: 'https://placeholder.com' },
+            { id: 11, cat: 'floor', name: 'Защитная полироль для линолеума и винила', desc: '1 л. Создает износостойкую пленку', price: 580, weight: 1, image: 'https://placeholder.com' },
+            { id: 12, cat: 'floor', name: 'Восстанавливающее покрытие для деревянных полов', desc: '0.75 л. Маскирует царапины и придает блеск', price: 720, weight: 0.9, image: 'https://placeholder.com' },
+            { id: 13, cat: 'floor', name: 'Противоскользящее средство для кафеля', desc: '1 л. Увеличивает коэффициент трения', price: 390, weight: 1, image: 'https://placeholder.com' },
+            { id: 14, cat: 'floor', name: 'Матовый воск для паркета', desc: '1 кг. Натуральная защита без блеска', price: 850, weight: 1, image: 'https://placeholder.com' },
+            { id: 15, cat: 'floor', name: 'Очиститель для натурального камня', desc: '1 л. Безопасен для мрамора и гранита', price: 670, weight: 1.2, image: 'https://placeholder.com' },
+            { id: 16, cat: 'food', name: 'Пенообразующий дезинфектант для пищевых поверхностей', desc: '5 л. Для оборудования из нержавеющей стали', price: 920, weight: 5, image: 'https://placeholder.com' },
+            { id: 17, cat: 'food', name: 'Обезжириватель для кухонного оборудования', desc: '1 л. Удаляет стойкие жиры и нагар', price: 480, weight: 1, image: 'https://placeholder.com' },
+            { id: 18, cat: 'food', name: 'Профессиональное средство для мойки посуды', desc: '5 л. Концентрат для посудомоечных машин', price: 620, weight: 5, image: 'https://placeholder.com' },
+            { id: 19, cat: 'food', name: 'Дезинфицирующее средство для овощей и фруктов', desc: '1 л. Без смыва, безопасный состав', price: 350, weight: 1, image: 'https://placeholder.com' },
+            { id: 20, cat: 'food', name: 'Удалитель накипи для кофемашин и пароконвектоматов', desc: '0.5 л. Предотвращает образование накипи', price: 420, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 21, cat: 'hotels', name: 'Концентрированный шампунь для ковровых покрытий', desc: '5 л. Пенный, быстро сохнет', price: 680, weight: 5, image: 'https://placeholder.com' },
+            { id: 22, cat: 'hotels', name: 'Освежитель воздуха в картриджах', desc: '0.3 л. Сменный блок для диспенсеров', price: 280, weight: 0.3, image: 'https://placeholder.com' },
+            { id: 23, cat: 'hotels', name: 'Таблетки для посудомоечных машин', desc: '100 шт. Профессиональная упаковка', price: 540, weight: 2, image: 'https://placeholder.com' },
+            { id: 24, cat: 'hotels', name: 'Универсальный чистящий спрей для номеров', desc: '0.75 л. Для стекол, пластика и металла', price: 310, weight: 0.8, image: 'https://placeholder.com' },
+            { id: 25, cat: 'hotels', name: 'Средство для удаления пятен с обивки мебели', desc: '1 л. Глубокое проникновение, без разводов', price: 470, weight: 1, image: 'https://placeholder.com' },
+            { id: 26, cat: 'laundry', name: 'Жидкий стиральный порошок для профессиональных машин', desc: '5 л. Концентрат 1:200, для всех типов ткани', price: 720, weight: 5, image: 'https://placeholder.com' },
+            { id: 27, cat: 'laundry', name: 'Кислородный отбеливатель', desc: '1 кг. Активируется при 40°C, безопасен для цвета', price: 380, weight: 1, image: 'https://placeholder.com' },
+            { id: 28, cat: 'laundry', name: 'Кондиционер для белья «Антистатика»', desc: '5 л. Смягчает ткань, снимает статику', price: 560, weight: 5, image: 'https://placeholder.com' },
+            { id: 29, cat: 'laundry', name: 'Пятновыводитель для стирки', desc: '1 л. Предварительная обработка трудновыводимых пятен', price: 480, weight: 1, image: 'https://placeholder.com' },
+            { id: 30, cat: 'laundry', name: 'Средство для стирки деликатных тканей', desc: '1 л. Для шелка, шерсти и микрофибры', price: 520, weight: 1, image: 'https://placeholder.com' },
+            { id: 31, cat: 'detailing', name: 'Активная пена для бесконтактной мойки', desc: '5 л. Густая пена, pH-нейтральная', price: 850, weight: 5, image: 'https://placeholder.com' },
+            { id: 32, cat: 'detailing', name: 'Автошампунь для ручной мойки', desc: '1 л. Концентрат, бережно очищает ЛКП', price: 390, weight: 1, image: 'https://placeholder.com' },
+            { id: 33, cat: 'detailing', name: 'Полироль для пластика и резины', desc: '0.5 л. Восстанавливает цвет, защищает от УФ', price: 620, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 34, cat: 'detailing', name: 'Очиститель двигателя', desc: 'Аэрозоль 0.5 л. Удаляет масло и грязь', price: 480, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 35, cat: 'detailing', name: 'Нановоск для кузова', desc: '0.25 л. Глубокий блеск, гидрофобный эффект', price: 970, weight: 0.3, image: 'https://placeholder.com' },
+            { id: 36, cat: 'home', name: 'Универсальный спрей для ежедневной уборки', desc: '0.5 л. Для кухни, ванной, мебели', price: 220, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 37, cat: 'home', name: 'Средство для мытья посуды', desc: '1 л. Эффективно удаляет жир, не сушит кожу', price: 190, weight: 1, image: 'https://placeholder.com' },
+            { id: 38, cat: 'home', name: 'Очиститель для кухонных плит и духовок', desc: '0.5 л. Справляется с пригоревшим жиром', price: 330, weight: 0.6, image: 'https://placeholder.com' },
+            { id: 39, cat: 'home', name: 'Средство для чистки мягкой мебели', desc: '0.75 л. Пенный, не оставляет разводов', price: 450, weight: 0.8, image: 'https://placeholder.com' },
+            { id: 40, cat: 'home', name: 'Ароматизатор для помещений', desc: '0.3 л. Нейтрализует запахи, длительное действие', price: 250, weight: 0.3, image: 'https://placeholder.com' },
+            { id: 41, cat: 'hands', name: 'Антибактериальное жидкое мыло', desc: '5 л. С триклозаном, pH 5.5', price: 480, weight: 5, image: 'https://placeholder.com' },
+            { id: 42, cat: 'hands', name: 'Гелевый антисептик для рук с алоэ', desc: '1 л. 70% спирта, увлажняет кожу', price: 320, weight: 1, image: 'https://placeholder.com' },
+            { id: 43, cat: 'hands', name: 'Пенный антисептик для диспенсера', desc: '1 л. Экономичный расход, быстро сохнет', price: 380, weight: 1, image: 'https://placeholder.com' },
+            { id: 44, cat: 'hands', name: 'Дезинфицирующие салфетки для рук', desc: '100 шт. Пропитка 70% изопропилового спирта', price: 150, weight: 0.2, image: 'https://placeholder.com' },
+            { id: 45, cat: 'hands', name: 'Крем-мыло для гигиены рук', desc: '5 л. Смягчает и дезинфицирует, без отдушек', price: 520, weight: 5, image: 'https://placeholder.com' },
+            { id: 46, cat: 'disinfection', name: 'Дезинфицирующее средство для поверхностей', desc: '5 л. Широкий спектр действия, без хлора', price: 610, weight: 5, image: 'https://placeholder.com' },
+            { id: 47, cat: 'disinfection', name: 'Кожный антисептик для рук (жидкий)', desc: '1 л. 75% спирта, быстро испаряется', price: 350, weight: 1, image: 'https://placeholder.com' },
+            { id: 48, cat: 'disinfection', name: 'Спрей для дезинфекции воздуха', desc: '0.5 л. Устраняет вирусы и бактерии', price: 420, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 49, cat: 'disinfection', name: 'Таблетки для дезинфекции воды', desc: '100 шт. Для обеззараживания питьевой воды', price: 280, weight: 0.3, image: 'https://placeholder.com' },
+            { id: 50, cat: 'disinfection', name: 'Концентрат для дезинфекции инструментов', desc: '5 л. Для медицинских и косметологических инструментов', price: 890, weight: 5, image: 'https://placeholder.com' }
         ];
+
+        let currentFilter = 'all';
 
         function loadState() {
             const saved = (key) => localStorage.getItem(`mexon_${key}`);
@@ -416,8 +454,17 @@
             try { favorites = JSON.parse(saved('fav')) || []; } catch(e){ favorites = []; }
             currentLang = saved('lang') || 'ru';
             if (saved('theme') === 'dark') document.documentElement.classList.add('dark');
+
             try { currentUser = JSON.parse(saved('user')) || null; } catch(e){ currentUser = null; }
-            try { products = JSON.parse(saved('products')) || defaultProducts; } catch(e){ products = defaultProducts; }
+
+            let savedProducts;
+            try { savedProducts = JSON.parse(saved('products')); } catch(e){ savedProducts = null; }
+            if (Array.isArray(savedProducts) && savedProducts.length > 0) {
+                products = savedProducts;
+            } else {
+                products = [...defaultProducts];
+            }
+
             try { reviews = JSON.parse(saved('reviews')) || []; } catch(e){ reviews = []; }
             try { orders = JSON.parse(saved('orders')) || []; } catch(e){ orders = []; }
             discountPercent = parseFloat(saved('discountPercent')) || 0;
@@ -462,7 +509,6 @@
             saveAll();
         }
 
-        // Корзина
         function toggleCartItem(productId) {
             const idx = cart.findIndex(i => i.productId === productId);
             if (idx > -1) cart.splice(idx, 1);
@@ -532,7 +578,6 @@
             container.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', () => removeFromCart(parseInt(b.dataset.id))));
         }
 
-        // Избранное
         function toggleFavorite(productId) {
             const idx = favorites.indexOf(productId);
             if (idx > -1) favorites.splice(idx, 1);
@@ -605,7 +650,6 @@
             }).join('');
             grid.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
             grid.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
-            grid.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(parseInt(b.dataset.id)); }));
             grid.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const id = parseInt(b.dataset.id);
@@ -614,47 +658,77 @@
             }));
         }
 
-        let currentFilter = 'all';
-        function renderCategories() {
+        // ===== НОВАЯ НЕУБИВАЕМАЯ ЛОГИКА КАТЕГОРИЙ И ТОВАРОВ =====
+        function renderCategories(activeId = 'all') {
             const container = document.getElementById('categoriesContainer');
-            const allPills = [{ id: 'all', name: '📋 Все', icon: '' }, ...categories];
-            container.innerHTML = allPills.map(c => `
-                <button class="category-pill flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap
-                    ${currentFilter === c.id ? 'bg-blue-600 text-white shadow-md' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'}"
-                    data-cat="${c.id}">
-                    ${c.name}
-                </button>
-            `).join('');
-            container.querySelectorAll('.category-pill').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    currentFilter = btn.dataset.cat;
-                    renderCategories();
-                    renderProducts();
-                    document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+            if (!container) return;
+            // Создаем кнопки только один раз
+            if (container.children.length === 0) {
+                const allPills = [{ id: 'all', name: '📋 Все' }, ...categories];
+                allPills.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = `category-btn inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300`;
+                    btn.dataset.id = cat.id;
+                    btn.textContent = cat.name;
+                    container.appendChild(btn);
                 });
+                // Делегирование кликов
+                container.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    const categoryId = button.dataset.id;
+                    if (categoryId) {
+                        currentFilter = categoryId;
+                        renderCategories(categoryId);
+                        renderProducts();
+                        document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+            // Обновление активного класса
+            Array.from(container.children).forEach(btn => {
+                const id = btn.dataset.id;
+                if (id === activeId) {
+                    btn.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-md', 'scale-105');
+                    btn.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                } else {
+                    btn.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-md', 'scale-105');
+                    btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+                }
             });
         }
 
         function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            const noProducts = document.getElementById('noProducts');
+            const container = document.getElementById('productsContainer');
+            if (!container) return;
             const dict = translations[currentLang];
-            let filtered = products;
-            if (currentFilter !== 'all') filtered = products.filter(p => p.cat === currentFilter);
+            let filtered = [];
+            if (currentFilter === 'all') {
+                filtered = [...products].sort(() => Math.random() - 0.5);
+            } else {
+                filtered = products.filter(p => String(p.cat).trim() === String(currentFilter).trim());
+            }
             if (filtered.length === 0) {
-                grid.innerHTML = '';
-                noProducts.classList.remove('hidden');
+                container.innerHTML = '<div class="text-center py-12 text-gray-500 w-full col-span-full font-medium">Товары не найдены (ошибка фильтрации)</div>';
+                document.getElementById('noProducts').classList.remove('hidden');
                 return;
             }
-            noProducts.classList.add('hidden');
-            grid.innerHTML = filtered.map(p => {
+            document.getElementById('noProducts').classList.add('hidden');
+            container.innerHTML = filtered.map(p => {
                 const inCart = cart.some(i => i.productId === p.id);
                 const isFav = favorites.includes(p.id);
                 return `
                 <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
                     <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
                     <div class="p-3 sm:p-4 flex flex-col flex-1">
-                        <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2">${p.name}</h4>
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2 pr-2">${p.name}</h4>
+                            <button class="fav-btn flex-shrink-0 ${isFav ? 'active' : ''}" data-id="${p.id}">
+                                <svg class="w-5 h-5" fill="${isFav ? '#ef4444' : 'none'}" stroke="${isFav ? '#ef4444' : 'currentColor'}" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
+                        </div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
                         <div class="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-1.5">${p.price} ₽</div>
                         <div class="mt-auto">
@@ -669,10 +743,14 @@
                     </div>
                 </div>`;
             }).join('');
-            grid.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
-            grid.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
-            grid.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(parseInt(b.dataset.id)); }));
-            grid.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
+            // Вешаем обработчики на все кнопки
+            container.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
+            container.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
+            container.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(parseInt(b.dataset.id));
+            }));
+            container.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const id = parseInt(b.dataset.id);
                 const p = products.find(p => p.id === id);
@@ -749,7 +827,7 @@
         function closeCheckout() { document.getElementById('checkoutModal').classList.add('hidden'); document.body.style.overflow = ''; }
 
         function renderAll() {
-            renderCategories();
+            renderCategories(currentFilter);
             renderProducts();
             renderCart();
             updateCartBadge();
@@ -765,14 +843,11 @@
             if (slides.length === 0) return;
             let currentSlide = 0;
             const totalSlides = slides.length;
-
-            // Применяем фоновые изображения к слайдам
             slides.forEach((slide, i) => {
                 if (BANNER_IMAGES[i]) {
                     slide.style.backgroundImage = `url('${BANNER_IMAGES[i]}')`;
                 }
             });
-
             function showSlide(index) { slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; }); }
             showSlide(currentSlide);
             setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides; showSlide(currentSlide); }, 10000);
@@ -790,9 +865,7 @@
         }
 
         function init() {
-            // Установка логотипа
             document.getElementById('logoImg').src = LOGO_URL;
-
             loadState();
             updateThemeIcons();
             translateUI();
@@ -895,7 +968,6 @@
                 document.getElementById('reviewText').value = '';
             });
 
-            // Нижняя панель
             document.getElementById('bottomHome').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             document.getElementById('bottomFav').addEventListener('click', openFavorites);
             document.getElementById('bottomCart').addEventListener('click', () => {
