@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Мэксон Трейд — Оптовые поставки химии ИНТЕРХИМ</title>
+
+    <!-- Шрифт Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-in-right': 'slideInRight 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'slide-in-up': 'slideInUp 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideInUp: {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        body { transition: background-color 0.3s, color 0.3s; }
+        .cart-panel { transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cart-overlay { transition: opacity 0.3s, visibility 0.3s; }
+        .favorites-panel { transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1); }
+        .dark .product-card:hover { box-shadow: 0 20px 30px -12px rgba(0,0,0,0.5); }
+        .fav-btn.active svg { fill: #ef4444; stroke: #ef4444; }
+        .slide { transition: opacity 0.7s ease; background-size: cover; background-position: center; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        .mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 antialiased">
+
+<!-- ==================== ШАПКА (HEADER) ==================== -->
+<header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 lg:h-18">
+            <a href="#" class="flex items-center gap-2 flex-shrink-0">
+                <img id="logoImg" src="" alt="Лого" class="w-9 h-9 rounded-lg shadow-md object-cover">
+                <div>
+                    <span class="text-xl lg:text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">Мэксон</span>
+                    <span class="text-xl lg:text-2xl font-bold text-blue-700 dark:text-blue-400">Трейд</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex items-center gap-1 xl:gap-3">
+                <a href="#catalog" class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700 transition" data-i18n="nav.catalog">Каталог</a>
+                <a href="#conditions" class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700 transition" data-i18n="nav.conditions">Условия</a>
+                <a href="#reviews" class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700 transition" data-i18n="nav.reviews">Отзывы</a>
+                <a href="#contacts" class="nav-link px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-700 transition" data-i18n="nav.contacts">Контакты</a>
+            </nav>
+            <div class="hidden lg:flex items-center gap-2 xl:gap-3">
+                <button id="langToggle" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-600" data-i18n="lang.code">RU</button>
+                <button id="themeToggle" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition" aria-label="Переключить тему">
+                    <svg id="themeIconLight" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <svg id="themeIconDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </button>
+                <button id="cartBtn" class="relative p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                    <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+                <button id="loginBtnHeader" class="ml-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition shadow-sm" data-i18n="header.login">Войти</button>
+                <button id="profileBtnHeader" class="ml-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-lg transition shadow-sm hidden" data-i18n="header.profile">Профиль</button>
+            </div>
+            <button id="burgerBtn" class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ==================== МОБИЛЬНАЯ БОКОВАЯ ПАНЕЛЬ (ШТОРКА) ==================== -->
+<div id="sidebarOverlay" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden transition-opacity duration-300 lg:hidden"></div>
+<div id="mobileSidebar" class="mobile-sidebar fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white dark:bg-gray-800 shadow-2xl z-50 flex flex-col translate-x-full lg:hidden">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+        <span class="text-lg font-bold text-gray-900 dark:text-white">Меню</span>
+        <button id="closeSidebar" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
+    <nav class="flex-1 py-4 space-y-1">
+        <a href="#catalog" class="sidebar-link flex items-center gap-3 px-5 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 transition border-b border-gray-100 dark:border-gray-700" data-i18n="nav.catalog">Каталог</a>
+        <a href="#conditions" class="sidebar-link flex items-center gap-3 px-5 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 transition border-b border-gray-100 dark:border-gray-700" data-i18n="nav.conditions">Условия</a>
+        <a href="#reviews" class="sidebar-link flex items-center gap-3 px-5 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 transition border-b border-gray-100 dark:border-gray-700" data-i18n="nav.reviews">Отзывы</a>
+        <a href="#contacts" class="sidebar-link flex items-center gap-3 px-5 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 transition border-b border-gray-100 dark:border-gray-700" data-i18n="nav.contacts">Контакты</a>
+        <a href="#" id="adminSidebarLink" class="sidebar-link hidden items-center gap-3 px-5 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-700 transition border-b border-gray-100 dark:border-gray-700">
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>Админ-панель</span>
+        </a>
+    </nav>
+    <div class="px-5 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center gap-3">
+        <button id="langToggleSidebar" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border" data-i18n="lang.code">RU</button>
+        <button id="themeToggleSidebar" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🌓</button>
+        <button id="loginBtnSidebar" class="ml-auto px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg" data-i18n="header.login">Войти</button>
+    </div>
+</div>
+
+<!-- ==================== ГЛАВНЫЙ БАННЕР-СЛАЙДЕР ==================== -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+    <div class="relative w-full overflow-hidden rounded-2xl shadow-lg h-36 sm:h-44 lg:h-52" id="sliderContainer">
+        <div class="slide absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700"></div>
+        <div class="slide absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700"></div>
+       
+</section>
+
+<!-- ==================== КАТАЛОГ ПРОДУКЦИИ ==================== -->
+<section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-2">
+    <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="catalog.title">Каталог продукции</h2>
+    <div class="flex overflow-x-auto md:overflow-visible md:flex-wrap md:justify-center scrollbar-hide gap-2 pb-2 mb-6" id="categoriesContainer"></div>
+</section>
+
+<section id="productsSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0 lg:py-0">
+    <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"></div>
+    <p id="noProducts" class="text-center text-gray-500 dark:text-gray-400 mt-8 hidden" data-i18n="catalog.noProducts">Товары не найдены</p>
+</section>
+
+<!-- ==================== УСЛОВИЯ ==================== -->
+<section id="conditions" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-8" data-i18n="conditions.title">Оптовые условия</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm flex gap-4 items-start">
+            <div class="flex-shrink-0 w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <div><h3 class="font-semibold text-gray-900 dark:text-white text-base mb-1">Прямые поставки</h3><p class="text-sm text-gray-600 dark:text-gray-400">От производителя «ИНТЕРХИМ» без посредников. Гарантированное качество и заводская упаковка.</p></div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm flex gap-4 items-start">
+            <div class="flex-shrink-0 w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            </div>
+            <div><h3 class="font-semibold text-gray-900 dark:text-white text-base mb-1">Доставка по РФ</h3><p class="text-sm text-gray-600 dark:text-gray-400">Работаем со всеми регионами России. Отгрузка со склада в Чебоксарах.</p></div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm flex gap-4 items-start">
+            <div class="flex-shrink-0 w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div><h3 class="font-semibold text-gray-900 dark:text-white text-base mb-1">Полный пакет документов</h3><p class="text-sm text-gray-600 dark:text-gray-400">Предоставляем сертификаты, паспорта безопасности, инструкции по применению.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ОТЗЫВЫ ==================== -->
+<section id="reviews" class="bg-gray-50 dark:bg-gray-800/50 py-12 lg:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="reviews.title">Отзывы клиентов</h2>
+        <div id="reviewsList" class="space-y-4 mb-6 max-w-2xl mx-auto"></div>
+        <div id="reviewFormContainer" class="max-w-lg mx-auto hidden">
+            <h3 class="font-bold text-base sm:text-lg mb-3 text-gray-900 dark:text-white" data-i18n="reviews.addTitle">Оставить отзыв</h3>
+            <textarea id="reviewText" rows="3" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 mb-2" placeholder="Ваш отзыв..."></textarea>
+            <div class="flex gap-2 items-center mb-3">
+                <label class="text-sm" data-i18n="reviews.rating">Рейтинг:</label>
+                <select id="reviewRating" class="p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select>
+            </div>
+            <button id="submitReview" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" data-i18n="reviews.submit">Отправить</button>
+        </div>
+        <p id="loginToReview" class="text-center text-gray-500 dark:text-gray-400" data-i18n="reviews.loginPrompt">Войдите, чтобы оставить отзыв</p>
+    </div>
+</section>
+
+<!-- ==================== ПОДВАЛ ==================== -->
+<footer id="contacts" class="bg-gray-900 dark:bg-gray-950 text-gray-400 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-sm text-center sm:text-left">
+            <p class="font-semibold text-white text-base sm:text-lg">ООО «Мэксон Трейд»</p>
+            <p>📧 mail@maisontrade.ru</p>
+            <p>📞 +7 (8352) 11-22-33</p>
+            <p>📍 г. Чебоксары, Чувашская Республика</p>
+            <p data-i18n="footer.copyright">© 2026 Все права защищены.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="https://wa.me/78352112233" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm">WhatsApp</a>
+            <a href="https://t.me/mexontrade" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">Telegram</a>
+        </div>
+    </div>
+    <div class="text-center pb-20 md:pb-4">
+        <a href="#" id="adminLink" class="text-xs text-gray-500 hover:text-white hidden">⚙️ Админ-панель</a>
+    </div>
+</footer>
+
+<!-- ==================== НИЖНЯЯ МОБИЛЬНАЯ ПАНЕЛЬ ==================== -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40 md:hidden flex justify-around items-center py-1.5">
+    <button id="bottomHome" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="text-xs mt-0.5">Главная</span>
+    </button>
+    <button id="bottomFav" class="relative flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <span id="bottomFavBadge" class="absolute -top-1 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+        <span class="text-xs mt-0.5">Избранное</span>
+    </button>
+    <button id="bottomCart" class="relative flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+        <span id="bottomCartBadge" class="absolute -top-1 right-0 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+        <span class="text-xs mt-0.5">Корзина</span>
+    </button>
+    <button id="bottomProfile" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 p-1 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        <span class="text-xs mt-0.5">Профиль</span>
+    </button>
+</nav>
+
+<!-- ==================== МОДАЛЬНЫЕ ОКНА ==================== -->
+<!-- Корзина -->
+<div id="cartOverlay" class="cart-overlay fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden opacity-0 invisible transition-all"></div>
+<div id="cartPanel" class="cart-panel fixed top-0 right-0 z-50 h-full w-full sm:w-[420px] bg-white dark:bg-gray-800 shadow-2xl flex flex-col translate-x-full">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 class="text-lg font-bold flex items-center gap-2">🛒 <span data-i18n="cart.title">Корзина</span> <span id="cartCount">(0)</span></h3>
+        <button id="cartClose" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div id="cartItemsContainer" class="flex-1 overflow-y-auto px-5 py-4 space-y-4"><p class="text-center text-gray-400 py-12" data-i18n="cart.empty">Корзина пуста</p></div>
+    <div class="border-t border-gray-200 dark:border-gray-700 px-5 py-4 space-y-2">
+        <div class="flex justify-between text-sm"><span data-i18n="cart.totalItems">Всего единиц:</span> <span id="cartTotalItems">0</span></div>
+        <div class="flex justify-between text-sm"><span data-i18n="cart.totalWeight">Общий вес:</span> <span id="cartTotalWeight">0 кг</span></div>
+        <div class="flex justify-between font-bold text-lg"><span data-i18n="cart.total">Итого:</span> <span id="cartTotal">0 ₽</span></div>
+        <button id="checkoutBtn" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl disabled:opacity-50" data-i18n="cart.checkout">Оформить заказ</button>
+    </div>
+</div>
+
+<!-- Оформление заказа -->
+<div id="checkoutModal" class="fixed inset-0 z-[60] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="checkoutOverlay"></div>
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
+        <button id="closeCheckout" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <h3 class="text-xl font-bold mb-4" data-i18n="checkout.title">Оформление заказа</h3>
+        <div id="checkoutOrderSummary" class="mb-4 text-sm space-y-1 max-h-40 overflow-y-auto"></div>
+        <form id="checkoutForm" class="space-y-3">
+            <input type="text" placeholder="Имя" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600" data-i18n-placeholder="checkout.name">
+            <input type="tel" placeholder="Телефон" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600" data-i18n-placeholder="checkout.phone">
+            <button type="submit" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700" data-i18n="checkout.submit">Отправить заказ</button>
+        </form>
+        <div class="mt-4 flex gap-2 justify-center">
+            <a href="#" id="waOrderBtn" target="_blank" class="px-4 py-2 bg-green-500 text-white text-sm rounded-lg">WhatsApp</a>
+            <a href="#" id="tgOrderBtn" target="_blank" class="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg">Telegram</a>
+            <a href="#" id="emailOrderBtn" class="px-4 py-2 bg-gray-600 text-white text-sm rounded-lg">Email</a>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно товара -->
+<div id="productModal" class="fixed inset-0 z-[70] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="productModalOverlay"></div>
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-lg mx-4 shadow-2xl z-10 animate-fade-in max-h-[90vh] overflow-y-auto">
+        <button id="closeProductModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <div id="productModalContent"></div>
+    </div>
+</div>
+
+<!-- Авторизация -->
+<div id="authModal" class="fixed inset-0 z-[80] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="authOverlay"></div>
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
+        <button id="closeAuth" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <h3 class="text-xl font-bold mb-4" data-i18n="auth.title">Вход / Регистрация</h3>
+        <form id="authForm" class="space-y-3">
+            <input type="text" id="authName" placeholder="Имя" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600" data-i18n-placeholder="auth.name">
+            <input type="email" id="authEmail" placeholder="Email" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
+            <input type="tel" id="authPhone" placeholder="Телефон" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
+            <input type="password" id="authPassword" placeholder="Пароль" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
+            <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="authIsAdmin"> Admin</label>
+            <button type="submit" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700" data-i18n="auth.login">Войти</button>
+        </form>
+    </div>
+</div>
+
+<!-- Профиль -->
+<div id="profileModal" class="fixed inset-0 z-[80] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="profileOverlay"></div>
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-md mx-4 shadow-2xl z-10 animate-fade-in">
+        <button id="closeProfile" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <h3 class="text-xl font-bold mb-4" data-i18n="profile.title">Личный кабинет</h3>
+        <div id="profileInfo" class="space-y-2 mb-4"></div>
+        <div class="mt-4"><h4 class="font-semibold mb-2" data-i18n="profile.orderHistory">История заказов</h4><div id="orderHistory" class="space-y-2 max-h-40 overflow-y-auto"></div></div>
+        <button id="logoutBtn" class="mt-4 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600" data-i18n="profile.logout">Выйти</button>
+    </div>
+</div>
+
+<!-- Админ-панель -->
+<div id="adminModal" class="fixed inset-0 z-[90] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="adminOverlay"></div>
+    <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-lg mx-4 shadow-2xl z-10 animate-fade-in max-h-[90vh] overflow-y-auto">
+        <button id="closeAdmin" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <h3 class="text-xl font-bold mb-4">⚙️ Админ-панель</h3>
+        <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl space-y-2">
+            <h4 class="font-semibold">Глобальные параметры</h4>
+            <div class="flex gap-2"><input type="number" id="discountPercent" placeholder="Скидка %" class="w-1/2 p-2 border rounded dark:bg-gray-600"><input type="number" id="discountRub" placeholder="Скидка ₽" class="w-1/2 p-2 border rounded dark:bg-gray-600"></div>
+            <button id="applySettings" class="px-4 py-2 bg-green-600 text-white rounded-lg">Применить</button>
+        </div>
+        <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
+            <h4 class="font-semibold mb-2">Добавить товар</h4>
+            <input type="text" id="newProductName" placeholder="Название" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
+            <select id="newProductCategory" class="w-full p-2 border rounded mb-2 dark:bg-gray-600"><option value="auto">Автохимия</option><option value="cleaning">Клининг</option><option value="hotel">Номерной фонд</option><option value="other">Другое</option></select>
+            <input type="number" id="newProductPrice" placeholder="Цена" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
+            <input type="number" id="newProductWeight" placeholder="Вес (кг)" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
+            <input type="text" id="newProductDesc" placeholder="Описание" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
+            <button id="addProductBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Добавить</button>
+        </div>
+        <div><h4 class="font-semibold mb-2">Поступившие заказы</h4><div id="adminOrdersList" class="space-y-2 max-h-60 overflow-y-auto"></div></div>
+    </div>
+</div>
+
+<!-- ЭКРАН ИЗБРАННОГО -->
+<div id="favoritesOverlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden opacity-0 invisible transition-all"></div>
+<div id="favoritesPanel" class="favorites-panel fixed inset-0 z-50 bg-white dark:bg-gray-800 flex flex-col translate-y-full">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 class="text-lg font-bold flex items-center gap-2">❤️ Избранное <span id="favsCount" class="text-sm text-gray-500">(0)</span></h3>
+        <button id="closeFavorites" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4">
+        <div id="favProductsGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"></div>
+        <p id="noFavProducts" class="text-center text-gray-500 dark:text-gray-400 mt-8 hidden">Нет избранных товаров</p>
+    </div>
+</div>
+
+<script>
+    // ==================== НАСТРОЙКИ ИЗОБРАЖЕНИЙ (ЗАМЕНИТЕ НА СВОИ ССЫЛКИ) ====================
+    const LOGO_URL = '444.jpg'; // Замените на ссылку на логотип, например 'img/logo.png'
+    const BANNER_IMAGES = [
+        '11.png', // Слайд 1
+        '22.png', // Слайд 2
+        '33.jpg'  // Слайд 3
+    ];
+    // ==================== ОСТАЛЬНОЙ КОД ====================
+
+    (function() {
+        const translations = {
+            ru: {
+                'lang.code': 'RU',
+                'nav.catalog': 'Каталог', 'nav.conditions': 'Условия', 'nav.reviews': 'Отзывы', 'nav.contacts': 'Контакты',
+                'header.login': 'Войти', 'header.profile': 'Профиль',
+                'catalog.title': 'Каталог продукции', 'catalog.noProducts': 'Товары не найдены',
+                'conditions.title': 'Оптовые условия',
+                'reviews.title': 'Отзывы клиентов', 'reviews.addTitle': 'Оставить отзыв', 'reviews.rating': 'Рейтинг:', 'reviews.submit': 'Отправить', 'reviews.loginPrompt': 'Войдите, чтобы оставить отзыв',
+                'cart.title': 'Корзина', 'cart.empty': 'Корзина пуста', 'cart.totalItems': 'Всего единиц:', 'cart.totalWeight': 'Общий вес:', 'cart.total': 'Итого:',
+                'cart.checkout': 'Оформить заказ',
+                'checkout.title': 'Оформление заказа', 'checkout.name': 'Имя', 'checkout.phone': 'Телефон', 'checkout.submit': 'Отправить заказ',
+                'auth.title': 'Вход / Регистрация', 'auth.name': 'Имя', 'auth.login': 'Войти',
+                'profile.title': 'Личный кабинет', 'profile.orderHistory': 'История заказов', 'profile.logout': 'Выйти',
+                'footer.copyright': '© 2026 Все права защищены.',
+                'product.add': 'В корзину', 'product.details': 'Подробнее', 'product.download': 'Скачать инструкцию'
+            },
+            en: {
+                'lang.code': 'EN',
+                'nav.catalog': 'Catalog', 'nav.conditions': 'Terms', 'nav.reviews': 'Reviews', 'nav.contacts': 'Contacts',
+                'header.login': 'Login', 'header.profile': 'Profile',
+                'catalog.title': 'Product Catalog', 'catalog.noProducts': 'No products found',
+                'conditions.title': 'Wholesale terms',
+                'reviews.title': 'Customer reviews', 'reviews.addTitle': 'Leave a review', 'reviews.rating': 'Rating:', 'reviews.submit': 'Submit', 'reviews.loginPrompt': 'Login to leave a review',
+                'cart.title': 'Cart', 'cart.empty': 'Cart is empty', 'cart.totalItems': 'Total pieces:', 'cart.totalWeight': 'Total weight:', 'cart.total': 'Total:',
+                'cart.checkout': 'Checkout',
+                'checkout.title': 'Checkout', 'checkout.name': 'Name', 'checkout.phone': 'Phone', 'checkout.submit': 'Submit order',
+                'auth.title': 'Login / Register', 'auth.name': 'Name', 'auth.login': 'Login',
+                'profile.title': 'Profile', 'profile.orderHistory': 'Order history', 'profile.logout': 'Logout',
+                'footer.copyright': '© 2026 All rights reserved.',
+                'product.add': 'Add to cart', 'product.details': 'Details', 'product.download': 'Download instruction'
+            }
+        };
+
+        let currentLang = 'ru';
+        let cart = [];
+        let favorites = [];
+        let currentUser = null;
+        let products = [];
+        let reviews = [];
+        let orders = [];
+        let discountPercent = 0;
+        let discountRub = 0;
+
+        const categories = [
+            { id: 'auto', name: '🚗 Автохимия', desc: 'Шампуни, полироли, очистители' },
+            { id: 'cleaning', name: '🧹 Клининг', desc: 'Профессиональная уборка помещений' },
+            { id: 'hotel', name: '🏨 Номерной фонд', desc: 'Химия для гостиниц и отелей' },
+            { id: 'other', name: '⚗️ Другое', desc: 'Специализированные составы' }
+        ];
+
+        // Товары: поле image содержит путь к картинке (замените на свои)
+        const defaultProducts = [
+            { id: 1, cat: 'auto', name: 'Автошампунь активная пена', desc: 'Бесконтактная мойка, концентрат 1:10', price: 320, weight: 1, image: '2.jpg' },
+            { id: 2, cat: 'auto', name: 'Полироль кузова', desc: 'Защита и блеск, нанесение вручную', price: 520, weight: 1, image: '4.jpg' },
+            { id: 3, cat: 'cleaning', name: 'Универсальный очиститель', desc: 'Для всех типов поверхностей', price: 280, weight: 5, image: '5.jpg' },
+            { id: 4, cat: 'cleaning', name: 'Средство для стекол', desc: 'Без разводов, быстрое высыхание', price: 190, weight: 5, image: '6.jpg' },
+            { id: 5, cat: 'hotel', name: 'Гель для душа 5л', desc: 'Гостиничный формат, нейтральный pH', price: 420, weight: 0.75, image: '7.webp' },
+            { id: 6, cat: 'other', name: 'Антисептик для рук', desc: 'Дезинфекция, с увлажнением', price: 240, weight: 0.5, image: '8.webp' },
+        ];
+
+        function loadState() {
+            const saved = (key) => localStorage.getItem(`mexon_${key}`);
+            try { cart = JSON.parse(saved('cart')) || []; } catch(e){ cart = []; }
+            try { favorites = JSON.parse(saved('fav')) || []; } catch(e){ favorites = []; }
+            currentLang = saved('lang') || 'ru';
+            if (saved('theme') === 'dark') document.documentElement.classList.add('dark');
+            try { currentUser = JSON.parse(saved('user')) || null; } catch(e){ currentUser = null; }
+            try { products = JSON.parse(saved('products')) || defaultProducts; } catch(e){ products = defaultProducts; }
+            try { reviews = JSON.parse(saved('reviews')) || []; } catch(e){ reviews = []; }
+            try { orders = JSON.parse(saved('orders')) || []; } catch(e){ orders = []; }
+            discountPercent = parseFloat(saved('discountPercent')) || 0;
+            discountRub = parseFloat(saved('discountRub')) || 0;
+        }
+
+        function saveAll() {
+            const set = (key, value) => localStorage.setItem(`mexon_${key}`, JSON.stringify(value));
+            set('cart', cart); set('fav', favorites);
+            localStorage.setItem('mexon_lang', currentLang);
+            localStorage.setItem('mexon_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            if (currentUser) set('user', currentUser); else localStorage.removeItem('mexon_user');
+            set('products', products); set('reviews', reviews); set('orders', orders);
+            localStorage.setItem('mexon_discountPercent', discountPercent);
+            localStorage.setItem('mexon_discountRub', discountRub);
+        }
+
+        function translateUI() {
+            const dict = translations[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.textContent = dict[key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (dict[key]) el.placeholder = dict[key];
+            });
+            document.getElementById('langToggle').textContent = dict['lang.code'];
+            document.getElementById('langToggleSidebar').textContent = dict['lang.code'];
+            updateAuthUI();
+            renderAll();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('themeIconLight').classList.toggle('hidden', !isDark);
+            document.getElementById('themeIconDark').classList.toggle('hidden', isDark);
+        }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            updateThemeIcons();
+            saveAll();
+        }
+
+        // Корзина
+        function toggleCartItem(productId) {
+            const idx = cart.findIndex(i => i.productId === productId);
+            if (idx > -1) cart.splice(idx, 1);
+            else cart.push({ productId, quantity: 1 });
+            saveAll(); renderAll();
+        }
+        function updateCartQty(productId, delta) {
+            const item = cart.find(i => i.productId === productId);
+            if (item) { item.quantity = Math.max(1, item.quantity + delta); saveAll(); renderCart(); updateCartBadge(); }
+        }
+        function removeFromCart(productId) { cart = cart.filter(i => i.productId !== productId); saveAll(); renderAll(); }
+        function cartTotalItems() { return cart.reduce((s, i) => s + i.quantity, 0); }
+        function cartTotalWeight() { return cart.reduce((s, i) => { const p = products.find(p => p.id === i.productId); return s + (p ? p.weight * i.quantity : 0); }, 0).toFixed(1); }
+        function cartTotalPrice() {
+            let total = cart.reduce((s, i) => { const p = products.find(p => p.id === i.productId); return s + (p ? p.price * i.quantity : 0); }, 0);
+            if (discountPercent > 0) total *= (1 - discountPercent/100);
+            total -= discountRub;
+            return Math.max(0, total).toFixed(0);
+        }
+        function updateCartBadge() {
+            const count = cartTotalItems();
+            const badge = document.getElementById('cartBadge');
+            const bottomBadge = document.getElementById('bottomCartBadge');
+            if (count > 0) {
+                badge.textContent = count; badge.classList.remove('hidden');
+                bottomBadge.textContent = count; bottomBadge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                bottomBadge.classList.add('hidden');
+            }
+        }
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const dict = translations[currentLang];
+            const totalItems = cartTotalItems();
+            document.getElementById('cartCount').textContent = `(${totalItems})`;
+            document.getElementById('cartTotalItems').textContent = totalItems;
+            document.getElementById('cartTotalWeight').textContent = cartTotalWeight() + ' кг';
+            document.getElementById('cartTotal').textContent = cartTotalPrice() + ' ₽';
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-12">${dict['cart.empty']}</p>`;
+                checkoutBtn.disabled = true;
+                return;
+            }
+            checkoutBtn.disabled = false;
+            container.innerHTML = cart.map(item => {
+                const p = products.find(p => p.id === item.productId);
+                if (!p) return '';
+                return `
+                <div class="flex gap-3 items-center p-3 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
+                    <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-200 dark:bg-gray-600">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium truncate">${p.name}</p>
+                        <p class="text-xs text-gray-500">${p.price} ₽/шт</p>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button class="qty-dec w-7 h-7 rounded bg-white dark:bg-gray-600 border text-sm" data-id="${p.id}">−</button>
+                        <span class="w-10 text-center text-sm">${item.quantity}</span>
+                        <button class="qty-inc w-7 h-7 rounded bg-white dark:bg-gray-600 border text-sm" data-id="${p.id}">+</button>
+                    </div>
+                    <button class="cart-remove text-red-400 hover:text-red-600" data-id="${p.id}">✕</button>
+                </div>`;
+            }).join('');
+            container.querySelectorAll('.qty-dec').forEach(b => b.addEventListener('click', () => updateCartQty(parseInt(b.dataset.id), -1)));
+            container.querySelectorAll('.qty-inc').forEach(b => b.addEventListener('click', () => updateCartQty(parseInt(b.dataset.id), 1)));
+            container.querySelectorAll('.cart-remove').forEach(b => b.addEventListener('click', () => removeFromCart(parseInt(b.dataset.id))));
+        }
+
+        // Избранное
+        function toggleFavorite(productId) {
+            const idx = favorites.indexOf(productId);
+            if (idx > -1) favorites.splice(idx, 1);
+            else favorites.push(productId);
+            saveAll();
+            renderProducts();
+            if (!document.getElementById('favoritesPanel').classList.contains('translate-y-full')) {
+                renderFavorites();
+            }
+            updateFavBadge();
+        }
+        function updateFavBadge() {
+            const count = favorites.length;
+            const badge = document.getElementById('bottomFavBadge');
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+        function openFavorites() {
+            document.getElementById('favoritesOverlay').classList.remove('hidden', 'opacity-0', 'invisible');
+            document.getElementById('favoritesPanel').classList.remove('translate-y-full');
+            document.body.style.overflow = 'hidden';
+            renderFavorites();
+        }
+        function closeFavorites() {
+            document.getElementById('favoritesOverlay').classList.add('opacity-0', 'invisible');
+            document.getElementById('favoritesPanel').classList.add('translate-y-full');
+            setTimeout(() => {
+                document.getElementById('favoritesOverlay').classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = '';
+        }
+        function renderFavorites() {
+            const grid = document.getElementById('favProductsGrid');
+            const noFav = document.getElementById('noFavProducts');
+            const dict = translations[currentLang];
+            const favProducts = products.filter(p => favorites.includes(p.id));
+            document.getElementById('favsCount').textContent = `(${favProducts.length})`;
+            if (favProducts.length === 0) {
+                grid.innerHTML = '';
+                noFav.classList.remove('hidden');
+                return;
+            }
+            noFav.classList.add('hidden');
+            grid.innerHTML = favProducts.map(p => {
+                const inCart = cart.some(i => i.productId === p.id);
+                return `
+                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
+                    <div class="p-3 sm:p-4 flex flex-col flex-1">
+                        <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2">${p.name}</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
+                        <div class="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-1.5">${p.price} ₽</div>
+                        <div class="mt-auto">
+                            <div class="mt-2 flex gap-1.5 items-center">
+                                <button class="add-cart-btn flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white text-lg font-bold transition shadow ${inCart?'bg-green-500 hover:bg-green-600':'bg-blue-600 hover:bg-blue-700'}" data-id="${p.id}">
+                                    ${inCart?'✓':'+'}
+                                </button>
+                                <button class="details-btn flex-1 px-2 sm:px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm" data-id="${p.id}">${dict['product.details']}</button>
+                            </div>
+                            <button class="mt-2 w-full text-xs text-blue-600 dark:text-blue-400 hover:underline download-btn text-center" data-id="${p.id}">📥 ${dict['product.download']}</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            grid.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
+            grid.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
+            grid.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(parseInt(b.dataset.id)); }));
+            grid.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(b.dataset.id);
+                const p = products.find(p => p.id === id);
+                alert(`Скачивание инструкции для: ${p ? p.name : 'товара #' + id}\n\nФайл: instruction_${id}.pdf`);
+            }));
+        }
+
+        let currentFilter = 'all';
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const allPills = [{ id: 'all', name: '📋 Все', icon: '' }, ...categories];
+            container.innerHTML = allPills.map(c => `
+                <button class="category-pill flex-shrink-0 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-sm font-semibold transition-all whitespace-nowrap
+                    ${currentFilter === c.id ? 'bg-blue-600 text-white shadow-md' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'}"
+                    data-cat="${c.id}">
+                    ${c.name}
+                </button>
+            `).join('');
+            container.querySelectorAll('.category-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentFilter = btn.dataset.cat;
+                    renderCategories();
+                    renderProducts();
+                    document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const noProducts = document.getElementById('noProducts');
+            const dict = translations[currentLang];
+            let filtered = products;
+            if (currentFilter !== 'all') filtered = products.filter(p => p.cat === currentFilter);
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noProducts.classList.remove('hidden');
+                return;
+            }
+            noProducts.classList.add('hidden');
+            grid.innerHTML = filtered.map(p => {
+                const inCart = cart.some(i => i.productId === p.id);
+                const isFav = favorites.includes(p.id);
+                return `
+                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
+                    <div class="p-3 sm:p-4 flex flex-col flex-1">
+                        <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2">${p.name}</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
+                        <div class="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-1.5">${p.price} ₽</div>
+                        <div class="mt-auto">
+                            <div class="mt-2 flex gap-1.5 items-center">
+                                <button class="add-cart-btn flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white text-lg font-bold transition shadow ${inCart?'bg-green-500 hover:bg-green-600':'bg-blue-600 hover:bg-blue-700'}" data-id="${p.id}">
+                                    ${inCart?'✓':'+'}
+                                </button>
+                                <button class="details-btn flex-1 px-2 sm:px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg text-xs sm:text-sm" data-id="${p.id}">${dict['product.details']}</button>
+                            </div>
+                            <button class="mt-2 w-full text-xs text-blue-600 dark:text-blue-400 hover:underline download-btn text-center" data-id="${p.id}">📥 ${dict['product.download']}</button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+            grid.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
+            grid.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
+            grid.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); toggleFavorite(parseInt(b.dataset.id)); }));
+            grid.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(b.dataset.id);
+                const p = products.find(p => p.id === id);
+                alert(`Скачивание инструкции для: ${p ? p.name : 'товара #' + id}\n\nФайл: instruction_${id}.pdf`);
+            }));
+        }
+
+        function openProductModal(id) {
+            const p = products.find(p => p.id === id);
+            if (!p) return;
+            const dict = translations[currentLang];
+            document.getElementById('productModalContent').innerHTML = `
+                <img src="${p.image}" alt="${p.name}" class="w-full h-64 object-cover rounded-xl mb-4">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">${p.name}</h3>
+                <p class="text-gray-500 dark:text-gray-400">${p.desc}</p>
+                <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                    <p class="font-semibold text-sm">📋 Способ применения и дозировка:</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Нанести средство на обрабатываемую поверхность, выдержать 2–3 минуты, тщательно смыть водой. Рекомендуемая концентрация рабочего раствора — 1:10. Использовать при температуре от +5°C до +35°C. Подробная инструкция прилагается в PDF-документе.</p>
+                </div>
+                <a href="#" class="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm" onclick="event.preventDefault(); alert('Скачивание инструкции для: ${p.name}')">📥 ${dict['product.download']}</a>
+            `;
+            document.getElementById('productModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); document.body.style.overflow = ''; }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            list.innerHTML = reviews.map(r => `<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm"><div class="font-semibold">${r.author}</div><div class="text-yellow-400">${'★'.repeat(r.rating)}</div><p class="text-sm mt-1">${r.text}</p></div>`).join('') || '<p class="text-gray-400 text-center">Нет отзывов</p>';
+            const form = document.getElementById('reviewFormContainer');
+            const prompt = document.getElementById('loginToReview');
+            if (currentUser) { form.classList.remove('hidden'); prompt.classList.add('hidden'); }
+            else { form.classList.add('hidden'); prompt.classList.remove('hidden'); }
+        }
+
+        function updateAuthUI() {
+            const loginBtn = document.getElementById('loginBtnHeader');
+            const profileBtn = document.getElementById('profileBtnHeader');
+            const loginSidebar = document.getElementById('loginBtnSidebar');
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                profileBtn.classList.remove('hidden');
+                loginSidebar.textContent = 'Профиль';
+            } else {
+                loginBtn.classList.remove('hidden');
+                profileBtn.classList.add('hidden');
+                loginSidebar.textContent = 'Войти';
+            }
+            document.getElementById('adminLink').classList.toggle('hidden', !(currentUser && currentUser.isAdmin));
+            document.getElementById('adminSidebarLink').classList.toggle('hidden', !(currentUser && currentUser.isAdmin));
+        }
+
+        function login(user) {
+            currentUser = user;
+            saveAll(); updateAuthUI(); document.getElementById('authModal').classList.add('hidden'); renderReviews();
+        }
+        function logout() {
+            currentUser = null; saveAll(); updateAuthUI(); document.getElementById('profileModal').classList.add('hidden'); renderReviews();
+        }
+
+        function openCheckout() {
+            const summary = document.getElementById('checkoutOrderSummary');
+            summary.innerHTML = cart.map(i => {
+                const p = products.find(p => p.id === i.productId);
+                return `<div>${p.name} x ${i.quantity} = ${p.price * i.quantity} ₽</div>`;
+            }).join('') + `<div class="font-bold mt-1">Итого: ${cartTotalPrice()} ₽</div>`;
+            const msg = encodeURIComponent(`Заказ Мэксон Трейд:%0A${cart.map(i => { const p = products.find(p=>p.id===i.productId); return `${p.name} x${i.quantity}`; }).join('%0A')}%0AИтого: ${cartTotalPrice()}₽`);
+            document.getElementById('waOrderBtn').href = `https://wa.me/78352112233?text=${msg}`;
+            document.getElementById('tgOrderBtn').href = `https://t.me/mexontrade?text=${msg}`;
+            document.getElementById('emailOrderBtn').href = `mailto:mail@maisontrade.ru?subject=Заказ&body=${msg}`;
+            document.getElementById('checkoutModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeCheckout() { document.getElementById('checkoutModal').classList.add('hidden'); document.body.style.overflow = ''; }
+
+        function renderAll() {
+            renderCategories();
+            renderProducts();
+            renderCart();
+            updateCartBadge();
+            updateFavBadge();
+            renderReviews();
+            if (!document.getElementById('favoritesPanel').classList.contains('translate-y-full')) {
+                renderFavorites();
+            }
+        }
+
+        function initSlider() {
+            const slides = document.querySelectorAll('#sliderContainer .slide');
+            if (slides.length === 0) return;
+            let currentSlide = 0;
+            const totalSlides = slides.length;
+
+            // Применяем фоновые изображения к слайдам
+            slides.forEach((slide, i) => {
+                if (BANNER_IMAGES[i]) {
+                    slide.style.backgroundImage = `url('${BANNER_IMAGES[i]}')`;
+                }
+            });
+
+            function showSlide(index) { slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; }); }
+            showSlide(currentSlide);
+            setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides; showSlide(currentSlide); }, 10000);
+        }
+
+        function openSidebar() {
+            document.getElementById('sidebarOverlay').classList.remove('hidden');
+            document.getElementById('mobileSidebar').classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSidebar() {
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+            document.getElementById('mobileSidebar').classList.add('translate-x-full');
+            document.body.style.overflow = '';
+        }
+
+        function init() {
+            // Установка логотипа
+            document.getElementById('logoImg').src = LOGO_URL;
+
+            loadState();
+            updateThemeIcons();
+            translateUI();
+            updateAuthUI();
+            renderAll();
+            initSlider();
+
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            document.getElementById('themeToggleSidebar').addEventListener('click', toggleTheme);
+            document.getElementById('langToggle').addEventListener('click', () => { currentLang = currentLang === 'ru' ? 'en' : 'ru'; saveAll(); translateUI(); });
+            document.getElementById('langToggleSidebar').addEventListener('click', () => { currentLang = currentLang === 'ru' ? 'en' : 'ru'; saveAll(); translateUI(); });
+
+            document.getElementById('burgerBtn').addEventListener('click', openSidebar);
+            document.getElementById('closeSidebar').addEventListener('click', closeSidebar);
+            document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+            document.querySelectorAll('#mobileSidebar .sidebar-link').forEach(link => { link.addEventListener('click', () => { closeSidebar(); }); });
+            document.getElementById('adminSidebarLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentUser && currentUser.isAdmin) document.getElementById('adminModal').classList.remove('hidden');
+                closeSidebar();
+            });
+
+            document.getElementById('cartBtn').addEventListener('click', () => {
+                document.getElementById('cartOverlay').classList.remove('hidden','opacity-0','invisible');
+                document.getElementById('cartPanel').classList.remove('translate-x-full');
+            });
+            document.getElementById('cartClose').addEventListener('click', () => {
+                document.getElementById('cartOverlay').classList.add('opacity-0','invisible');
+                document.getElementById('cartPanel').classList.add('translate-x-full');
+                setTimeout(() => document.getElementById('cartOverlay').classList.add('hidden'), 300);
+            });
+            document.getElementById('cartOverlay').addEventListener('click', () => document.getElementById('cartClose').click());
+
+            document.getElementById('checkoutBtn').addEventListener('click', openCheckout);
+            document.getElementById('closeCheckout').addEventListener('click', closeCheckout);
+            document.getElementById('checkoutOverlay').addEventListener('click', closeCheckout);
+            document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                orders.push({ items: [...cart], total: cartTotalPrice(), date: new Date().toLocaleString(), user: currentUser?.email || 'guest' });
+                cart = []; saveAll(); renderAll(); closeCheckout(); alert('Заказ оформлен!');
+            });
+
+            document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
+            document.getElementById('productModalOverlay').addEventListener('click', closeProductModal);
+
+            document.getElementById('loginBtnHeader').addEventListener('click', () => document.getElementById('authModal').classList.remove('hidden'));
+            document.getElementById('loginBtnSidebar').addEventListener('click', () => { closeSidebar(); document.getElementById('authModal').classList.remove('hidden'); });
+            document.getElementById('closeAuth').addEventListener('click', () => document.getElementById('authModal').classList.add('hidden'));
+            document.getElementById('authOverlay').addEventListener('click', () => document.getElementById('authModal').classList.add('hidden'));
+            document.getElementById('authForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                login({
+                    name: document.getElementById('authName').value,
+                    email: document.getElementById('authEmail').value,
+                    phone: document.getElementById('authPhone').value,
+                    isAdmin: document.getElementById('authIsAdmin').checked,
+                });
+            });
+
+            document.getElementById('profileBtnHeader').addEventListener('click', () => {
+                if (!currentUser) return;
+                document.getElementById('profileInfo').innerHTML = `Имя: ${currentUser.name}<br>Email: ${currentUser.email}<br>Телефон: ${currentUser.phone}`;
+                document.getElementById('orderHistory').innerHTML = orders.filter(o => o.user === currentUser.email).map(o => `<div class="text-xs p-2 bg-gray-50 dark:bg-gray-700 rounded">${o.date}: ${o.total}₽</div>`).join('') || 'Нет заказов';
+                document.getElementById('profileModal').classList.remove('hidden');
+            });
+            document.getElementById('closeProfile').addEventListener('click', () => document.getElementById('profileModal').classList.add('hidden'));
+            document.getElementById('profileOverlay').addEventListener('click', () => document.getElementById('profileModal').classList.add('hidden'));
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
+            document.getElementById('adminLink').addEventListener('click', () => {
+                document.getElementById('adminOrdersList').innerHTML = orders.map(o => `<div class="text-xs p-2 bg-gray-50 dark:bg-gray-700 rounded">${o.date}: ${o.total}₽ (${o.user})</div>`).join('') || 'Нет заказов';
+                document.getElementById('adminModal').classList.remove('hidden');
+            });
+            document.getElementById('closeAdmin').addEventListener('click', () => document.getElementById('adminModal').classList.add('hidden'));
+            document.getElementById('adminOverlay').addEventListener('click', () => document.getElementById('adminModal').classList.add('hidden'));
+            document.getElementById('applySettings').addEventListener('click', () => {
+                discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
+                discountRub = parseFloat(document.getElementById('discountRub').value) || 0;
+                saveAll(); renderCart();
+            });
+            document.getElementById('addProductBtn').addEventListener('click', () => {
+                const name = document.getElementById('newProductName').value;
+                const cat = document.getElementById('newProductCategory').value;
+                const price = parseFloat(document.getElementById('newProductPrice').value);
+                const weight = parseFloat(document.getElementById('newProductWeight').value);
+                const desc = document.getElementById('newProductDesc').value;
+                const image = prompt('URL картинки товара (оставьте пустым для заглушки)') || 'https://via.placeholder.com/300';
+                if (!name || !price) return;
+                const newId = Math.max(...products.map(p => p.id), 0) + 1;
+                products.push({ id: newId, cat, name, desc, price, weight, image });
+                saveAll(); renderAll();
+            });
+
+            document.getElementById('submitReview').addEventListener('click', () => {
+                if (!currentUser) return;
+                const text = document.getElementById('reviewText').value;
+                const rating = parseInt(document.getElementById('reviewRating').value);
+                reviews.push({ author: currentUser.name || currentUser.email, text, rating });
+                saveAll(); renderReviews();
+                document.getElementById('reviewText').value = '';
+            });
+
+            // Нижняя панель
+            document.getElementById('bottomHome').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            document.getElementById('bottomFav').addEventListener('click', openFavorites);
+            document.getElementById('bottomCart').addEventListener('click', () => {
+                document.getElementById('cartOverlay').classList.remove('hidden','opacity-0','invisible');
+                document.getElementById('cartPanel').classList.remove('translate-x-full');
+            });
+            document.getElementById('bottomProfile').addEventListener('click', () => {
+                if (currentUser) document.getElementById('profileBtnHeader').click();
+                else document.getElementById('authModal').classList.remove('hidden');
+            });
+
+            document.getElementById('closeFavorites').addEventListener('click', closeFavorites);
+            document.getElementById('favoritesOverlay').addEventListener('click', closeFavorites);
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
+    })();
+</script>
+</body>
+</html>
