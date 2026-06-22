@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ru" class="">
 <head>
     <meta charset="UTF-8">
@@ -128,7 +128,7 @@
 
 <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-2">
     <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="catalog.title">Каталог продукции</h2>
-    <div id="categoriesContainer" class="grid grid-cols-2 gap-3 mb-6"></div>
+    <div id="categoriesContainer" class="grid grid-cols-2 gap-4 px-4 mb-8"></div>
 </section>
 
 <section id="productsSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0 lg:py-0">
@@ -381,16 +381,16 @@
         let discountRub = 0;
 
         const categories = [
-            { id: 'cleaning', name: '🧹 Клининг', desc: 'Средства для профессиональной уборки' },
-            { id: 'praktikhim', name: '🧪 Практихим', desc: 'Препараты для химчисток и пятновыведения' },
-            { id: 'floor', name: '🛡️ Защита напольных покрытий', desc: 'Защита и уход за напольными покрытиями' },
-            { id: 'food', name: '🍽️ Пищевая промышленность', desc: 'Моющие и дезинфицирующие средства для пищевых производств' },
-            { id: 'hotels', name: '🏨 Отели и гостиницы', desc: 'Средства для гостиничного хозяйства' },
-            { id: 'laundry', name: '🧺 Стирка и прачечные', desc: 'Средства для стирки и прачечных' },
-            { id: 'detailing', name: '🚗 Автомойки и детейлинг', desc: 'Автохимия и средства для детейлинга' },
-            { id: 'home', name: '🏡 Уход за домом', desc: 'Бытовая химия для дома' },
-            { id: 'hands', name: '🤲 Гигиена рук', desc: 'Антисептики и средства для гигиены рук' },
-            { id: 'disinfection', name: '🦠 Дезинфекция', desc: 'Дезинфицирующие средства для поверхностей и воздуха' }
+            { id: 'cleaning', name: 'Клининг', icon: '🧹' },
+            { id: 'praktikhim', name: 'Практихим', icon: '🧪' },
+            { id: 'floor', name: 'Защита напольных покрытий', icon: '🛡️' },
+            { id: 'food', name: 'Пищевая промышленность', icon: '🍽️' },
+            { id: 'hotels', name: 'Отели и гостиницы', icon: '🏨' },
+            { id: 'laundry', name: 'Стирка и прачечные', icon: '🧺' },
+            { id: 'detailing', name: 'Автомойки и детейлинг', icon: '🚗' },
+            { id: 'home', name: 'Уход за домом', icon: '🏡' },
+            { id: 'hands', name: 'Гигиена рук', icon: '🤲' },
+            { id: 'disinfection', name: 'Дезинфекция', icon: '🦠' }
         ];
 
         const defaultProducts = [
@@ -672,25 +672,37 @@
             }));
         }
 
+        // ===== НОВЫЙ СТИЛЬ КАТЕГОРИЙ (КАК НА МАКЕТЕ) =====
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
-            // Устанавливаем сетку 2 в ряд
-            container.className = 'grid grid-cols-2 gap-3 mb-6';
+            container.className = 'grid grid-cols-2 gap-4 px-4 mb-8';
 
-            const allPills = [{ id: 'all', name: '📋 Все' }, ...categories];
-            container.innerHTML = allPills.map(c => `
+            const allPills = [{ id: 'all', name: 'Все', icon: '📋' }, ...categories];
+            container.innerHTML = allPills.map(c => {
+                const isActive = currentFilter === c.id;
+                return `
                 <button
                     data-id="${c.id}"
-                    class="p-3 flex items-center justify-center gap-2 transition-all duration-300 rounded-2xl
-                    text-[11px] font-medium leading-tight text-center line-clamp-2
-                    ${currentFilter === c.id
-                        ? 'bg-blue-600 text-white shadow-md shadow-blue-200 scale-[1.02] font-semibold'
-                        : 'bg-gray-50 text-gray-700 border border-gray-100 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700'
+                    class="relative flex items-center justify-between p-4 rounded-2xl transition-all duration-300
+                    ${isActive
+                        ? 'bg-blue-50 border border-blue-200 shadow-sm'
+                        : 'bg-white border border-gray-100 shadow-sm hover:shadow-md'
                     }"
                 >
-                    ${c.name}
-                </button>
-            `).join('');
+                    <div class="flex items-center gap-3 w-full">
+                        <span class="w-12 h-12 rounded-full flex items-center justify-center shrink-0
+                            ${isActive ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}">
+                            <span class="text-xl">${c.icon}</span>
+                        </span>
+                        <div class="flex-1 text-left min-w-0">
+                            <p class="text-xs md:text-sm font-bold text-slate-800 leading-tight line-clamp-2">${c.name}</p>
+                        </div>
+                        <svg class="w-4 h-4 shrink-0 ${isActive ? 'text-blue-500' : 'text-gray-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </button>`;
+            }).join('');
 
             container.querySelectorAll('button').forEach(btn => {
                 btn.addEventListener('click', () => {
