@@ -54,51 +54,6 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .categories-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: flex-start;
-            padding-bottom: 8px;
-        }
-        .category-btn {
-            padding: 8px 16px;
-            border-radius: 9999px;
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-            background-color: #f3f4f6;
-            color: #374151;
-        }
-        .dark .category-btn {
-            background-color: #374151;
-            color: #e5e7eb;
-            border-color: #4b5563;
-        }
-        .category-btn.active {
-            background-color: #2563eb;
-            color: white;
-            border-color: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-            transform: scale(1.05);
-        }
-        .category-btn:not(.active):hover {
-            background-color: #e5e7eb;
-            border-color: #d1d5db;
-        }
-        .dark .category-btn:not(.active):hover {
-            background-color: #4b5563;
-            border-color: #6b7280;
-        }
-        @media (max-width: 640px) {
-            .category-btn {
-                font-size: 13px;
-                padding: 6px 12px;
-            }
-        }
     </style>
 </head>
 <body class="font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 antialiased">
@@ -173,7 +128,7 @@
 
 <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-2">
     <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-center text-gray-900 dark:text-white mb-6" data-i18n="catalog.title">Каталог продукции</h2>
-    <div id="categoriesContainer" class="categories-grid pb-2 mb-6"></div>
+    <div id="categoriesContainer" class="grid grid-cols-2 gap-3 mb-6"></div>
 </section>
 
 <section id="productsSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-0 lg:py-0">
@@ -719,14 +674,25 @@
 
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
+            // Устанавливаем сетку 2 в ряд
+            container.className = 'grid grid-cols-2 gap-3 mb-6';
+
             const allPills = [{ id: 'all', name: '📋 Все' }, ...categories];
             container.innerHTML = allPills.map(c => `
-                <button class="category-btn ${currentFilter === c.id ? 'active' : ''}"
-                    data-id="${c.id}">
+                <button
+                    data-id="${c.id}"
+                    class="p-3 flex items-center justify-center gap-2 transition-all duration-300 rounded-2xl
+                    text-[11px] font-medium leading-tight text-center line-clamp-2
+                    ${currentFilter === c.id
+                        ? 'bg-blue-600 text-white shadow-md shadow-blue-200 scale-[1.02] font-semibold'
+                        : 'bg-gray-50 text-gray-700 border border-gray-100 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700'
+                    }"
+                >
                     ${c.name}
                 </button>
             `).join('');
-            container.querySelectorAll('.category-btn').forEach(btn => {
+
+            container.querySelectorAll('button').forEach(btn => {
                 btn.addEventListener('click', () => {
                     currentFilter = btn.dataset.id;
                     if (currentFilter === 'all') {
