@@ -55,22 +55,46 @@
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-start;
+            padding-bottom: 8px;
         }
-        .category-pill {
-            padding: 4px 8px;
-            font-size: 12px;
-            border-radius: 20px;
+        .category-btn {
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 14px;
             font-weight: 500;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: #f3f4f6;
+            color: #374151;
         }
-        @media (min-width: 640px) {
-            .category-pill {
+        .dark .category-btn {
+            background-color: #374151;
+            color: #e5e7eb;
+            border-color: #4b5563;
+        }
+        .category-btn.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            transform: scale(1.05);
+        }
+        .category-btn:not(.active):hover {
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+        }
+        .dark .category-btn:not(.active):hover {
+            background-color: #4b5563;
+            border-color: #6b7280;
+        }
+        @media (max-width: 640px) {
+            .category-btn {
                 font-size: 13px;
                 padding: 6px 12px;
             }
@@ -330,6 +354,7 @@
                 <option value="detailing">Автомойки и детейлинг</option>
                 <option value="home">Уход за домом</option>
                 <option value="hands">Гигиена рук</option>
+                <option value="disinfection">Дезинфекция</option>
             </select>
             <input type="number" id="newProductPrice" placeholder="Цена" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
             <input type="number" id="newProductWeight" placeholder="Вес (кг)" class="w-full p-2 border rounded mb-2 dark:bg-gray-600">
@@ -409,7 +434,8 @@
             { id: 'laundry', name: '🧺 Стирка и прачечные', desc: 'Средства для стирки и прачечных' },
             { id: 'detailing', name: '🚗 Автомойки и детейлинг', desc: 'Автохимия и средства для детейлинга' },
             { id: 'home', name: '🏡 Уход за домом', desc: 'Бытовая химия для дома' },
-            { id: 'hands', name: '🤲 Гигиена рук', desc: 'Антисептики и средства для гигиены рук' }
+            { id: 'hands', name: '🤲 Гигиена рук', desc: 'Антисептики и средства для гигиены рук' },
+            { id: 'disinfection', name: '🦠 Дезинфекция', desc: 'Дезинфицирующие средства для поверхностей и воздуха' }
         ];
 
         const defaultProducts = [
@@ -457,8 +483,16 @@
             { id: 42, cat: 'hands', name: 'Гелевый антисептик для рук с алоэ', desc: '1 л. 70% спирта, увлажняет кожу', price: 320, weight: 1, image: 'https://placeholder.com' },
             { id: 43, cat: 'hands', name: 'Пенный антисептик для диспенсера', desc: '1 л. Экономичный расход, быстро сохнет', price: 380, weight: 1, image: 'https://placeholder.com' },
             { id: 44, cat: 'hands', name: 'Дезинфицирующие салфетки для рук', desc: '100 шт. Пропитка 70% изопропилового спирта', price: 150, weight: 0.2, image: 'https://placeholder.com' },
-            { id: 45, cat: 'hands', name: 'Крем-мыло для гигиены рук', desc: '5 л. Смягчает и дезинфицирует, без отдушек', price: 520, weight: 5, image: 'https://placeholder.com' }
+            { id: 45, cat: 'hands', name: 'Крем-мыло для гигиены рук', desc: '5 л. Смягчает и дезинфицирует, без отдушек', price: 520, weight: 5, image: 'https://placeholder.com' },
+            { id: 46, cat: 'disinfection', name: 'Дезинфицирующее средство для поверхностей', desc: '5 л. Широкий спектр действия, без хлора', price: 610, weight: 5, image: 'https://placeholder.com' },
+            { id: 47, cat: 'disinfection', name: 'Кожный антисептик для рук (жидкий)', desc: '1 л. 75% спирта, быстро испаряется', price: 350, weight: 1, image: 'https://placeholder.com' },
+            { id: 48, cat: 'disinfection', name: 'Спрей для дезинфекции воздуха', desc: '0.5 л. Устраняет вирусы и бактерии', price: 420, weight: 0.5, image: 'https://placeholder.com' },
+            { id: 49, cat: 'disinfection', name: 'Таблетки для дезинфекции воды', desc: '100 шт. Для обеззараживания питьевой воды', price: 280, weight: 0.3, image: 'https://placeholder.com' },
+            { id: 50, cat: 'disinfection', name: 'Концентрат для дезинфекции инструментов', desc: '5 л. Для медицинских и косметологических инструментов', price: 890, weight: 5, image: 'https://placeholder.com' }
         ];
+
+        let currentFilter = 'all';
+        let shuffledAllProducts = [];
 
         function loadState() {
             const saved = (key) => localStorage.getItem(`mexon_${key}`);
@@ -471,10 +505,22 @@
 
             let savedProducts;
             try { savedProducts = JSON.parse(saved('products')); } catch(e){ savedProducts = null; }
+            const validCatIds = categories.map(c => c.id);
             if (Array.isArray(savedProducts) && savedProducts.length > 0) {
-                products = savedProducts;
+                const allValid = savedProducts.every(p => p && typeof p.cat === 'string' && validCatIds.includes(p.cat));
+                if (allValid) {
+                    products = savedProducts;
+                } else {
+                    console.warn('⚠️ Товары повреждены, сброс к стандартным');
+                    products = [...defaultProducts];
+                    localStorage.removeItem('mexon_products');
+                }
             } else {
                 products = [...defaultProducts];
+            }
+
+            if (currentFilter === 'all') {
+                shuffledAllProducts = [...products].sort(() => Math.random() - 0.5);
             }
 
             try { reviews = JSON.parse(saved('reviews')) || []; } catch(e){ reviews = []; }
@@ -671,20 +717,21 @@
             }));
         }
 
-        let currentFilter = 'all';
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
             const allPills = [{ id: 'all', name: '📋 Все' }, ...categories];
             container.innerHTML = allPills.map(c => `
-                <button class="category-pill bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 transition-all
-                    ${currentFilter === c.id ? 'bg-blue-600 text-white shadow-md border-blue-600' : ''}"
-                    data-cat="${c.id}">
+                <button class="category-btn ${currentFilter === c.id ? 'active' : ''}"
+                    data-id="${c.id}">
                     ${c.name}
                 </button>
             `).join('');
-            container.querySelectorAll('.category-pill').forEach(btn => {
+            container.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    currentFilter = btn.dataset.cat;
+                    currentFilter = btn.dataset.id;
+                    if (currentFilter === 'all') {
+                        shuffledAllProducts = [...products].sort(() => Math.random() - 0.5);
+                    }
                     renderCategories();
                     renderProducts();
                     document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth' });
@@ -696,8 +743,12 @@
             const grid = document.getElementById('productsGrid');
             const noProducts = document.getElementById('noProducts');
             const dict = translations[currentLang];
-            let filtered = products;
-            if (currentFilter !== 'all') filtered = products.filter(p => p.cat === currentFilter);
+            let filtered = [];
+            if (currentFilter === 'all') {
+                filtered = shuffledAllProducts.length > 0 ? shuffledAllProducts : [...products].sort(() => Math.random() - 0.5);
+            } else {
+                filtered = products.filter(p => p.cat === currentFilter);
+            }
             if (filtered.length === 0) {
                 grid.innerHTML = '';
                 noProducts.classList.remove('hidden');
@@ -706,11 +757,19 @@
             noProducts.classList.add('hidden');
             grid.innerHTML = filtered.map(p => {
                 const inCart = cart.some(i => i.productId === p.id);
+                const isFav = favorites.includes(p.id);
                 return `
                 <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
                     <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
                     <div class="p-3 sm:p-4 flex flex-col flex-1">
-                        <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2">${p.name}</h4>
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2 pr-2">${p.name}</h4>
+                            <button class="fav-btn flex-shrink-0 ${isFav ? 'active' : ''}" data-id="${p.id}">
+                                <svg class="w-5 h-5" fill="${isFav ? '#ef4444' : 'none'}" stroke="${isFav ? '#ef4444' : 'currentColor'}" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </button>
+                        </div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
                         <div class="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mt-1.5">${p.price} ₽</div>
                         <div class="mt-auto">
@@ -727,6 +786,10 @@
             }).join('');
             grid.querySelectorAll('.add-cart-btn').forEach(b => b.addEventListener('click', () => toggleCartItem(parseInt(b.dataset.id))));
             grid.querySelectorAll('.details-btn').forEach(b => b.addEventListener('click', () => openProductModal(parseInt(b.dataset.id))));
+            grid.querySelectorAll('.fav-btn').forEach(b => b.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(parseInt(b.dataset.id));
+            }));
             grid.querySelectorAll('.download-btn').forEach(b => b.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const id = parseInt(b.dataset.id);
