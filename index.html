@@ -394,10 +394,10 @@
         ];
 
         const defaultProducts = [
-            { id: 1, cat: 'cleaning', name: 'Концентрированное средство для мытья полов', desc: 'Объем 5 л. Для всех типов напольных покрытий', price: 450, weight: 5, image: 'https://placeholder.com' },
-            { id: 2, cat: 'cleaning', name: 'Универсальный очиститель для твердых поверхностей', desc: 'Концентрат 1 л. Удаляет жир и грязь', price: 320, weight: 1, image: 'https://placeholder.com' },
-            { id: 3, cat: 'cleaning', name: 'Средство для стекол и зеркал', desc: '0.5 л. Без разводов, быстро сохнет', price: 180, weight: 0.5, image: 'https://placeholder.com' },
-            { id: 4, cat: 'cleaning', name: 'Пенный очиститель для ванных комнат', desc: '0.75 л. Удаляет мыльный налет и ржавчину', price: 280, weight: 0.8, image: 'https://placeholder.com' },
+            { id: 1, cat: 'cleaning', name: 'ИНТЕРХИМ 703', desc: 'Средство регулярной очистки поверхностей в санитарных помещениях, с защитным эффектом', price: 450, weight: 5, image: '1111.jpg' },
+            { id: 2, cat: 'cleaning', name: 'ИНТЕРХИМ 703 PLUS', desc: 'Усиленное средство очистки поверхностей в санитарных помещениях', price: 320, weight: 1, image: '21.jpg' },
+            { id: 3, cat: 'cleaning', name: 'ИНТЕРХИМ 703 ГЕЛЬ', desc: 'Гель для регулярной очистки поверхностей в санитарных помещениях', price: 180, weight: 0.5, image: '02.jpg' },
+            { id: 4, cat: 'cleaning', name: 'Konzentrat K Universal', desc: 'Концентрат универсального кислотного средства очистки', price: 280, weight: 0.8, image: '23.jpg' },
             { id: 5, cat: 'cleaning', name: 'Нейтральный очиститель для ковров', desc: '1 л. Безопасен для всех типов ворса', price: 350, weight: 1, image: 'https://placeholder.com' },
             { id: 6, cat: 'praktikhim', name: 'Профессиональный пятновыводитель для одежды', desc: '1 л. Эффективен против масляных и белковых пятен', price: 520, weight: 1, image: 'https://placeholder.com' },
             { id: 7, cat: 'praktikhim', name: 'Растворитель для жиров и масел', desc: '5 л. Концентрат для промышленной мойки', price: 780, weight: 5, image: 'https://placeholder.com' },
@@ -573,7 +573,7 @@
                 if (!p) return '';
                 return `
                 <div class="flex gap-3 items-center p-3 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
-                    <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-200 dark:bg-gray-600">
+                    <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-lg object-contain bg-gray-200 dark:bg-gray-600">
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium truncate">${p.name}</p>
                         <p class="text-xs text-gray-500">${p.price} ₽/шт</p>
@@ -643,8 +643,10 @@
             grid.innerHTML = favProducts.map(p => {
                 const inCart = cart.some(i => i.productId === p.id);
                 return `
-                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
-                    <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
+                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-all flex flex-col h-full">
+                    <div class="bg-gray-50 dark:bg-gray-700 h-36 rounded-t-2xl flex items-center justify-center p-2 overflow-hidden relative group">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain max-h-full transition-transform duration-300 group-hover:scale-105">
+                    </div>
                     <div class="p-3 sm:p-4 flex flex-col flex-1">
                         <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2">${p.name}</h4>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${p.desc}</p>
@@ -672,7 +674,6 @@
             }));
         }
 
-        // ===== АДАПТИВНЫЙ СТИЛЬ КАТЕГОРИЙ (БЕЗ ОБРЕЗАНИЯ ТЕКСТА) =====
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
             container.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 px-2 sm:px-4 mb-6';
@@ -735,8 +736,10 @@
                 const inCart = cart.some(i => i.productId === p.id);
                 const isFav = favorites.includes(p.id);
                 return `
-                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm transition-all flex flex-col h-full">
-                    <img src="${p.image}" alt="${p.name}" class="w-full h-32 sm:h-40 object-cover bg-gray-100 dark:bg-gray-700">
+                <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-all flex flex-col h-full">
+                    <div class="bg-gray-50 dark:bg-gray-700 h-36 rounded-t-2xl flex items-center justify-center p-2 overflow-hidden relative group">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain max-h-full transition-transform duration-300 group-hover:scale-105">
+                    </div>
                     <div class="p-3 sm:p-4 flex flex-col flex-1">
                         <div class="flex justify-between items-start">
                             <h4 class="font-semibold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-2 pr-2">${p.name}</h4>
@@ -779,7 +782,9 @@
             if (!p) return;
             const dict = translations[currentLang];
             document.getElementById('productModalContent').innerHTML = `
-                <img src="${p.image}" alt="${p.name}" class="w-full h-64 object-cover rounded-xl mb-4">
+                <div class="bg-gray-50 dark:bg-gray-700 h-48 rounded-xl flex items-center justify-center p-4 mb-4">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain">
+                </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white">${p.name}</h3>
                 <p class="text-gray-500 dark:text-gray-400">${p.desc}</p>
                 <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
